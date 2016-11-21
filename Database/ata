@@ -1,1 +1,114 @@
 --This is database file
+create table  ATA_TBL_CreditCard (
+CreditCardNumber  VARCHAR(16) Primary Key,
+ ValidFrom  VARCHAR(7)  Not Null ,
+ValidTo  VARCHAR(7)  Not Null  ,
+CreditBalance  NUMBER  Not Null  ,
+UserId VARCHAR(6)  Foreign Key references ATA_TBL_User_Credentials(Userid));
+
+create table ATA_TBL_Reservation (
+reservationId VARCHAR2 (6) Primary Key ,
+UserId VARCHAR2 (6) Foreign Key references  ATA_TBL_User_Credentials(Userid),
+ VehicleId VARCHAR2 (6) Foreign Key references ATA_TBL_Vehicle(vehicleId),
+ RouteId VARCHAR2 (8) Foreign Key references ATA_TBL_Route(routeId),
+BookingDate Date Not Null ,
+JourneyDate Date Not Null ,
+DriverId VARCHAR2 (6) Foreign Key references ATA_TBL_Driver(driverId),
+ BookingStatus VARCHAR2 (20) Not Null ,
+TotalFare NUMBER(10) Not Null ,
+BoardingPoint VARCHAR2(30) Not Null ,
+DropPoint VARCHAR2(30) Not Null 
+
+);
+
+create table  ATA_TBL_Route (
+routeId VARCHAR2 (8) Primary Key,
+ Source VARCHAR2(20) Not Null ,
+Destination VARCHAR2 (20) Not Null,
+ Distance NUMBER(4) Not Null ,
+TravelDuration NUMBER(3) Not Null 
+);
+
+
+create table  ATA_TBL_Driver (
+driverId VARCHAR2(6) Primary Key,
+ Name VARCHAR2(25) Not Null, --Either[A|B]** 
+Street VARCHAR2(30) Not Null ,
+Location VARCHAR2(15) Not Null ,
+City VARCHAR2(15) Not Null ,
+State VARCHAR2(15) Not Null ,
+Pincode VARCHAR2(6) Not Null,
+ MobileNo VARCHAR(10) ,--Exact 10 digit only
+ LicenseNumber VARCHAR2(20) Unique 
+
+);
+
+create table  ATA_TBL_Vehicle (
+vehicleId VARCHAR2(6) Primary Key,
+ Name VARCHAR2(20) Not Null ,
+Type VARCHAR2(8) Not Null ,
+RegistrationNumber VARCHAR2(12) Not Null,
+ SeatingCapacity NUMBER(3) Not Null,
+ FarePerKM NUMBER(3)  
+);
+
+create table ATA_TBL_User_Profile (
+
+UserId VARCHAR2(6) Foreign Key references ATA_TBL_User_Credentials(Userid),
+ Firstname VARCHAR2(15) Not Null ,
+Lastname VARCHAR2(15) Not Null,
+ Dateofbirth DATE Not Null ,
+Gender VARCHAR2(7) Not Null ,
+Street VARCHAR2(30) Not Null,
+ Location VARCHAR2(15) Not Null ,
+City VARCHAR2(15) Not Null ,
+State VARCHAR2(15) Not Null,
+ Pincode VARCHAR2(6) Not Null ,
+MobileNo VARCHAR(10) ,--Exact 10 digit only 
+EmailId VARCHAR2(30)  --* 
+);
+
+
+craete table ATA_TBL_User_Credentials (
+Userid VARCHAR2(6) Primary Key,
+ Password VARCHAR2(20) Not Null,
+Usertype VARCHAR2(1), --Either ['A','C'] 
+Loginstatus NUMBER(1) -- Either [1 ,0] 
+);
+
+
+--sequences
+CREATE SEQUENCE ata_seq_userId 
+  MINVALUE 1000
+MAXVALUE 9999
+  START WITH 1000
+  INCREMENT BY 1
+  CACHE 20;
+
+CREATE SEQUENCE ata_seq_routeId  
+  MINVALUE 1000
+MAXVALUE 9999
+  START WITH 1000
+  INCREMENT BY 1
+  CACHE 20;
+
+CREATE SEQUENCE ata_seq_driverId  
+  MINVALUE 1000
+MAXVALUE 9999
+  START WITH 1000
+  INCREMENT BY 1
+  CACHE 20;
+
+CREATE SEQUENCE ata_seq_vehicleId 
+  MINVALUE 1000
+MAXVALUE 9999
+  START WITH 1000
+  INCREMENT BY 1
+  CACHE 20;
+
+CREATE SEQUENCE ata_seq_reservationId  
+  MINVALUE 1000
+MAXVALUE 9999
+  START WITH 1000
+  INCREMENT BY 1
+  CACHE 20;
